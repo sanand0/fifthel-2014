@@ -76,7 +76,8 @@ for (var i=0; i<10; i++) {
 <div id="knockout-barchart"
      data-bind="foreach: {data: numbers, as: 'num'}">
   <div class="bar"
-       data-bind="style: {width: num * 20 + 'px'}"></div>
+       data-bind="style: {width: num * 20 + 'px', height: '18px'}">
+  </div>
 </div>
 <script src="knockout-3.1.0.js"></script>
 <script>
