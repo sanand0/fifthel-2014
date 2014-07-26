@@ -1,0 +1,117 @@
+<!DOCTYPE html><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client side rendering</title>
+  <style>
+  body { width: 800px; margin: 0 auto; font-family: sans-serif; }
+  .title { font-size: 32px; fill: #66a; }
+  .cell { font-size: 32px; }
+  .bar { background-color: orange; display: block; margin-bottom: 1px;}
+  </style>
+</head><body>
+
+<h1>Client side rendering</h1>
+
+<p>There are four broad ways of rendering on the client side. View the source to understand them.</p>
+
+<svg width="550" height="250">
+  <g transform="translate(150,50)">
+    <text x="100" y="-25" text-anchor="middle" dy=".35em" class="title">Declarative</text>
+    <text x="300" y="-25" text-anchor="middle" dy=".35em" class="title">Procedural</text>
+    <text x="-5" y="50" text-anchor="end" dy=".35em" class="title">Template</text>
+    <text x="-5" y="150" text-anchor="end" dy=".35em" class="title">Binding</text>
+    <path d="M0,0h400v200h-400z M200,0v200 M0,100h400" stroke="#000" fill="none"/>
+    <text x="100" y="50" text-anchor="middle" dy=".35em" class="cell">underscore</text>
+    <text x="300" y="50" text-anchor="middle" dy=".35em" class="cell">jQuery</text>
+    <text x="100" y="150" text-anchor="middle" dy=".35em" class="cell">Knockout</text>
+    <text x="300" y="150" text-anchor="middle" dy=".35em" class="cell">d3</text>
+  </g>
+</svg>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h1>Underscore: declarative templates</h1>
+
+<script id="template" type="text/html">
+  <% for (var i=0; i<10; i++) { %>
+    <div style="width:<%= i * 20 %>px;height:18px"
+         class="bar">&#160;</div>
+  <% } %>
+</script>
+
+<script src="underscore-min.js"></script>
+<script>
+var node = document.getElementById('template'),
+    div = document.createElement('div')
+div.innerHTML = _.template(node.innerHTML, {})
+node.insertAdjacentElement('afterEnd', div)
+</script>
+
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h1>jQuery: procedural templates</h1>
+
+<div id="jquery-barchart"></div>
+
+<script src="jquery2.min.js"></script>
+<script>
+var $chart = $('#jquery-barchart')
+for (var i=0; i<10; i++) {
+  $chart.append('<div class="bar" style="width:' +
+    i * 20 + 'px;height:18px"/>')
+}
+</script>
+
+
+
+
+
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h1>Knockout: declarative binding</h1>
+
+<div id="knockout-barchart"
+     data-bind="foreach: {data: numbers, as: 'num'}">
+  <div class="bar"
+       data-bind="style: {width: num * 20 + 'px'}"></div>
+</div>
+<script src="knockout-3.1.0.js"></script>
+<script>
+function AppViewModel() {
+  this.numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+}
+ko.applyBindings(new AppViewModel());
+</script>
+
+
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<h1>d3: procedural binding</h1>
+
+<div id="d3-barchart"></div>
+
+<script src="d3.v3.min.js"></script>
+<script>
+d3.select('#d3-barchart')
+    .selectAll('div')
+    .data(d3.range(10))
+  .enter()
+    .append('div')
+    .attr('class', 'bar')
+    .style('width', function(i) { return i * 20 + 'px' })
+    .style('height', '18px')
+</script>
+
+
+
+
+
+
+
+
+</body></html>
